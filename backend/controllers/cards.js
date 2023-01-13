@@ -5,7 +5,6 @@ const { ValidationError } = require('../errors/validationError');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
     .populate('likes')
     .then((cards) => {
       res.send(cards);
@@ -18,10 +17,7 @@ const createCard = (req, res, next) => {
   const userId = req.user._id;
   const { name, link } = req.body;
   Card.create({ name, link, owner: userId })
-    .then((card) => Card.findByIdAndRemove(card._id)
-      .populate('owner')
-      .then((card) => res.send(card))
-      .catch(next))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Переданы некорректные данные.'));
@@ -69,7 +65,6 @@ const addLikesCard = (req, res, next) => {
       new: true,
     },
   )
-    .populate('owner')
     .populate('likes')
     .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((card) => {
@@ -98,7 +93,6 @@ const removeLikesCard = (req, res, next) => {
       new: true,
     },
   )
-    .populate('owner')
     .populate('likes')
     .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((card) => {
