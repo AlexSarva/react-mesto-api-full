@@ -87,6 +87,8 @@ class Api {
             headers: this._headers,
             credentials: this._credentials,
             method: 'PATCH',
+            mode: 'same-origin',
+            redirect: 'follow',
             body: JSON.stringify({
                 avatar: avatar,
             })
