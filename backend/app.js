@@ -9,6 +9,7 @@ const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 const { InternalServerError } = require('./errors/internalServerError');
 const { NotFoundError } = require('./errors/notFoundError');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT } = process.env;
 const app = express();
@@ -31,6 +32,7 @@ app.use(limiter);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(requestLogger);
 
 app.use('/', require('./routes/auth'));
 
@@ -40,6 +42,8 @@ app.use('/cards', auth, require('./routes/cards'));
 app.use('*', auth, () => {
   throw new NotFoundError('Страница не найдена');
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use((err, req, res, next) => {
