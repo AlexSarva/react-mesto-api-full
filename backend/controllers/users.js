@@ -5,7 +5,7 @@ const { NotFoundError } = require('../errors/notFoundError');
 const { ConflictError } = require('../errors/conflictError');
 const { ValidationError } = require('../errors/validationError');
 
-// const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -36,7 +36,7 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = tokenType.concat(' ', jwt.sign({ _id: user._id }, '10691b9aa32227c7ed58e3585b55842d9fa02a970bcb84ff7b82dbd44da0467b', { expiresIn: '1w' }));
+      const token = tokenType.concat(' ', jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '1w' }));
       res.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 7 })
         .status(200)
         .send({
