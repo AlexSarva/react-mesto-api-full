@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const corsCustom = require('./middlewares/cors');
 const auth = require('./middlewares/auth');
 const { InternalServerError } = require('./errors/internalServerError');
 const { NotFoundError } = require('./errors/notFoundError');
@@ -21,39 +22,13 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-const allowedCors = [
-  'https://sarva.students.nomoredomains.rocks',
-  'http://sarva.students.nomoredomains.rocks',
-  'localhost:3001',
-  'http://localhost:3001',
-  'localhost:3000',
-  'http://localhost:3000'
-];
-
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.use(function(req, res, next) {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-
-  // const requestHeaders = req.headers['access-control-request-headers'];
-  res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-  }
-
-  next();
-});
+app.use(corsCustom);
 
 app.use(helmet());
 app.use(limiter);
