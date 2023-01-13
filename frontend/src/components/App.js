@@ -46,8 +46,7 @@ function App() {
 
     useEffect(() => {
         if (loggedIn) {
-            const jwt = localStorage.getItem('jwt')
-            Promise.all([api.getInitialProfileInfo(jwt), api.getInitialCards(jwt)])
+            Promise.all([api.getInitialProfileInfo(), api.getInitialCards()])
                 .then(([userData, cards]) => {
                     setCurrentUser(userData);
                     setCards(cards);
@@ -59,7 +58,7 @@ function App() {
     }, [loggedIn])
 
     function handleUpdateUser(userInfo) {
-        api.patchProfileInfo(userInfo, localStorage.getItem('jwt'))
+        api.patchProfileInfo(userInfo)
             .then((userData) => {
                 setCurrentUser(userData);
             })
@@ -72,7 +71,7 @@ function App() {
     }
 
     function handleUpdateAvatar(avatar) {
-        api.editAvatar(avatar, localStorage.getItem('jwt'))
+        api.editAvatar(avatar)
             .then((userData) => {
                 setCurrentUser(userData);
             })
@@ -92,7 +91,7 @@ function App() {
         api.pressLike({
             likeState: isLiked,
             imgID: card._id
-        }, localStorage.getItem('jwt'))
+        })
             .then((newCard) => {
                 setCards((state) => state.map((oldCard) => oldCard._id === card._id ? newCard : oldCard));
             })
@@ -103,7 +102,7 @@ function App() {
 
     function handleAddPlace(place) {
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        api.addNewCard(place, localStorage.getItem('jwt'))
+        api.addNewCard(place)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
             })
@@ -159,7 +158,7 @@ function App() {
         e.preventDefault();
 
         if (isDeleteCardPopup.show) {
-            api.deleteCard(isDeleteCardPopup.card._id, localStorage.getItem('jwt'))
+            api.deleteCard(isDeleteCardPopup.card._id)
                 .then(() => {
                     setCards((state) => state.filter((oldCard) => oldCard._id !== isDeleteCardPopup.card._id));
                 })
