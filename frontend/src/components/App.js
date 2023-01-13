@@ -72,7 +72,7 @@ function App() {
     }
 
     function handleUpdateAvatar(avatar) {
-        api.editAvatar(avatar)
+        api.editAvatar(avatar, localStorage.getItem('jwt'))
             .then((userData) => {
                 setCurrentUser(userData);
             })
@@ -92,7 +92,7 @@ function App() {
         api.pressLike({
             likeState: isLiked,
             imgID: card._id
-        })
+        }, localStorage.getItem('jwt'))
             .then((newCard) => {
                 setCards((state) => state.map((oldCard) => oldCard._id === card._id ? newCard : oldCard));
             })
@@ -103,7 +103,7 @@ function App() {
 
     function handleAddPlace(place) {
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        api.addNewCard(place)
+        api.addNewCard(place, localStorage.getItem('jwt'))
             .then((newCard) => {
                 setCards([newCard, ...cards]);
             })
@@ -159,7 +159,7 @@ function App() {
         e.preventDefault();
 
         if (isDeleteCardPopup.show) {
-            api.deleteCard(isDeleteCardPopup.card._id)
+            api.deleteCard(isDeleteCardPopup.card._id, localStorage.getItem('jwt'))
                 .then(() => {
                     setCards((state) => state.filter((oldCard) => oldCard._id !== isDeleteCardPopup.card._id));
                 })

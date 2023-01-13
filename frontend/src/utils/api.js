@@ -7,7 +7,6 @@ class Api {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         };
-        this._credentials = 'include';
     }
 
     _checkResponse(res) {
@@ -23,7 +22,6 @@ class Api {
                     ...this._headers,
                     'Authorization': token,
                 },
-                credentials: this._credentials,
                 method: 'GET'})
             .then(this._checkResponse)
             .then((res) => {
@@ -38,7 +36,6 @@ class Api {
                     ...this._headers,
                     'Authorization': token,
                 },
-                credentials: this._credentials,
                 method: 'GET'})
             .then(this._checkResponse)
     }
@@ -49,7 +46,6 @@ class Api {
                 ...this._headers,
                 'Authorization': token,
             },
-            credentials: this._credentials,
             method: 'PATCH',
             body: JSON.stringify({
                 name: name,
@@ -59,10 +55,12 @@ class Api {
             .then(this._checkResponse)
     }
 
-    addNewCard({name, link}) {
+    addNewCard({name, link}, token) {
         return fetch(`${this._baseUrl}/cards`, {
-            headers: this._headers,
-            credentials: this._credentials,
+            headers: {
+                ...this._headers,
+                'Authorization': token,
+            },
             method: 'POST',
             body: JSON.stringify({
                 name: name,
@@ -73,21 +71,24 @@ class Api {
 
     }
 
-    deleteCard(id) {
+    deleteCard(id, token) {
         return fetch(`${this._baseUrl}/cards/${id}`, {
-            headers: this._headers,
-            credentials: this._credentials,
+            headers: {
+                ...this._headers,
+                'Authorization': token,
+            },
             method: 'DELETE',
         })
             .then(this._checkResponse)
     }
 
-    editAvatar({avatar}) {
+    editAvatar({avatar}, token) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
-            headers: this._headers,
-            credentials: 'include',
+            headers: {
+                ...this._headers,
+                'Authorization': token,
+            },
             method: 'PATCH',
-            redirect: 'follow',
             body: JSON.stringify({
                 avatar: avatar,
             })
@@ -95,20 +96,24 @@ class Api {
             .then(this._checkResponse)
     }
 
-    pressLike({likeState, imgID}) {
+    pressLike({likeState, imgID}, token) {
         if (likeState) {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
-                    headers: this._headers,
-                    credentials: this._credentials,
+                    headers: {
+                        ...this._headers,
+                        'Authorization': token,
+                    },
                     method: 'DELETE'
                 })
                 .then(this._checkResponse)
         } else {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
-                    headers: this._headers,
-                    credentials: this._credentials,
+                    headers: {
+                        ...this._headers,
+                        'Authorization': token,
+                    },
                     method: 'PUT'
                 })
                 .then(this._checkResponse)
