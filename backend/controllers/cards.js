@@ -11,6 +11,7 @@ const getCards = (req, res, next) => {
       res.send(cards);
     })
     .catch(next);
+
 };
 
 const createCard = (req, res, next) => {
