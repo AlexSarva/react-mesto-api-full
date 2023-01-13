@@ -1,0 +1,13 @@
+.auth {
+  width: 880px;
+  margin: 60px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 940px) {
+  .auth {
+    width: 90%;
+  }
+}

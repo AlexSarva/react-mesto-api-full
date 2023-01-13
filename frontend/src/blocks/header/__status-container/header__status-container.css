@@ -1,0 +1,6 @@
+.header__status-container {
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 24px;
+}

@@ -1,0 +1,14 @@
+.popup__container_type_form {
+  width: 430px;
+  z-index: 1;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+
+@media screen and (max-width: 450px) {
+  .popup__container_type_form {
+    width: 282px;
+  }
+}

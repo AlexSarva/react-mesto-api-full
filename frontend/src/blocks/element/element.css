@@ -1,0 +1,14 @@
+.element {
+  height: 361px; /*Если не указать, при открытии с мобильного устройства карточки обрезаются https://imgur.com/a/AHXmshK*/
+  background-color: #fff;
+  display: grid;
+  grid-template-rows: 282px 79px;
+  grid-template-columns: 1fr;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  outline: 1px solid #000;
+  position: relative;
+  opacity: 0;
+}

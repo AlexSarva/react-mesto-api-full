@@ -1,0 +1,15 @@
+.header__auth-link {
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration: none;
+  text-align: right;
+  color: #FFFFFF;
+}
+
+.header__auth-link:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

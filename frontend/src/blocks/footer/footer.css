@@ -1,0 +1,22 @@
+.footer {
+  width: 880px;
+  padding: 0;
+  margin: 70px auto 60px;
+  color: #545454;
+  font-size: 18px;
+  text-align: left;
+}
+
+@media screen and (max-width: 940px) {
+  .footer {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .footer {
+    width: 282px;
+    margin: 50px auto 36px;
+    font-size: 14px;
+  }
+}

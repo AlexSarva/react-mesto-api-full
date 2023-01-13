@@ -1,0 +1,16 @@
+.header__exit-btn {
+  border: 0;
+  background-color: transparent;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #A9A9A9;
+}
+
+.header__exit-btn:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}

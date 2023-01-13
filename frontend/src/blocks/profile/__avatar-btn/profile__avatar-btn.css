@@ -1,0 +1,31 @@
+.profile__avatar-btn {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-image: url(../../../images/kusto.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: transparent;
+  border: 0;
+  position: relative;
+}
+
+.profile__avatar-btn:after {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  position: absolute;
+  content: '';
+  background: rgba(0, 0, 0, 0.8) url(../../../images/edit-btn.svg) no-repeat center center;
+  background-size: 26px 26px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.profile__avatar-btn:hover:after {
+  cursor: pointer;
+  opacity: 1;
+}

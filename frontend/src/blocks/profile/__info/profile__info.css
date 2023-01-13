@@ -1,0 +1,25 @@
+.profile__info {
+  margin: 0 0 0 30px;
+  padding: 0;
+  max-width: calc(100% - 200px);
+  display: grid;
+  grid-template-columns: 1fr fit-content(24px);
+  column-gap: 18px;
+  row-gap: 8px;
+  grid-template-areas:
+     "name btn"
+     "occupation occupation";
+}
+
+@media screen and (max-width: 940px) {
+  .profile__info {
+    margin: 28px 0 0 0;
+    max-width: calc(100% - 70px);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+     "name"
+     "occupation";
+    row-gap: 9px;
+    position: relative;
+  }
+}

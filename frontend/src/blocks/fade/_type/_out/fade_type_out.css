@@ -1,0 +1,22 @@
+.fade_type_out {
+  -webkit-animation: fade-out .7s forwards;
+  animation: fade-out .7s forwards;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
