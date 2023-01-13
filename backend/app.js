@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
   }
 
   // const requestHeaders = req.headers['access-control-request-headers'];
-  res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
 
   const { method } = req;

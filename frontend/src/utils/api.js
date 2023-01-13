@@ -85,9 +85,8 @@ class Api {
     editAvatar({avatar}) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             headers: this._headers,
-            credentials: this._credentials,
+            credentials: 'include',
             method: 'PATCH',
-            mode: 'same-origin',
             redirect: 'follow',
             body: JSON.stringify({
                 avatar: avatar,
