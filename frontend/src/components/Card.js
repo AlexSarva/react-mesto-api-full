@@ -4,7 +4,9 @@ import {CurrentUserContext} from '../context/CurrentUserContext';
 function Card(props) {
 
     const currentUser = useContext(CurrentUserContext);
-    console.log(currentUser);
+    if (currentUser) {
+        console.log(currentUser);
+    }
     const isOwn = props.card.owner._id === currentUser._id;
     const isLiked = props.card.likes.some(i => i._id === currentUser._id);
 
