@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const corsCustom = require('./middlewares/cors');
 const auth = require('./middlewares/auth');
 const { InternalServerError } = require('./errors/internalServerError');
 const { NotFoundError } = require('./errors/notFoundError');
@@ -27,6 +28,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
+app.use(corsCustom);
+
 app.use(helmet());
 app.use(limiter);
 app.use(cookieParser());
@@ -34,10 +37,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.use('/', require('./routes/auth'));
 
-app.use('/users', auth, require('./routes/users'));
-app.use('/cards', auth, require('./routes/cards'));
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
 
 app.use('*', auth, () => {
   throw new NotFoundError('Страница не найдена');

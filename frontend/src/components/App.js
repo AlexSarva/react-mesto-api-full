@@ -185,7 +185,7 @@ function App() {
 
     function handleSignup(email, password) {
         auth.register(email, password)
-            .then((res) => {
+            .then(() => {
                 openAuthPopup(true);
                 history.push('/sign-in');
             })
@@ -216,7 +216,7 @@ function App() {
             // проверяем токен пользователя
             auth.checkToken(jwt)
                 .then((data) => {
-                    setUserName(data.data.email);
+                    setUserName(data.email);
                     setLoggedIn(true);
                     history.push('/');
                 })

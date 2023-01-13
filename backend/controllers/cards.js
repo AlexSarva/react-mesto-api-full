@@ -5,7 +5,6 @@ const { ValidationError } = require('../errors/validationError');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    // .populate('owner')
     .populate('likes')
     .then((cards) => {
       res.send(cards);
@@ -65,6 +64,7 @@ const addLikesCard = (req, res, next) => {
       new: true,
     },
   )
+    .populate('likes')
     .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((card) => {
       res.send(card);
@@ -92,6 +92,7 @@ const removeLikesCard = (req, res, next) => {
       new: true,
     },
   )
+    .populate('likes')
     .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((card) => {
       res.send(card);

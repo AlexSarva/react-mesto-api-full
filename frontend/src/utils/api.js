@@ -1,9 +1,12 @@
-import {apiConfig} from "./constants";
+import { baseApiURL } from "./constants";
 
 class Api {
-    constructor({baseUrl, headers}) {
+    constructor(baseUrl) {
         this._baseUrl = baseUrl;
-        this._headers = headers;
+        this._headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
     }
 
     _checkResponse(res) {
@@ -15,7 +18,11 @@ class Api {
 
     getInitialProfileInfo() {
         return fetch(`${this._baseUrl}/users/me`,
-            {headers: this._headers})
+            {headers: {
+                    ...this._headers,
+                    'Authorization': localStorage.getItem('jwt'),
+                },
+                method: 'GET'})
             .then(this._checkResponse)
             .then((res) => {
                 this._myID = res._id;
@@ -25,13 +32,20 @@ class Api {
 
     getInitialCards() {
         return fetch(`${this._baseUrl}/cards`,
-            {headers: this._headers})
+            {headers: {
+                    ...this._headers,
+                    'Authorization': localStorage.getItem('jwt'),
+                },
+                method: 'GET'})
             .then(this._checkResponse)
     }
 
     patchProfileInfo({name, about}) {
         return fetch(`${this._baseUrl}/users/me`, {
-            headers: this._headers,
+            headers: {
+                ...this._headers,
+                'Authorization': localStorage.getItem('jwt'),
+            },
             method: 'PATCH',
             body: JSON.stringify({
                 name: name,
@@ -43,7 +57,10 @@ class Api {
 
     addNewCard({name, link}) {
         return fetch(`${this._baseUrl}/cards`, {
-            headers: this._headers,
+            headers: {
+                ...this._headers,
+                'Authorization': localStorage.getItem('jwt'),
+            },
             method: 'POST',
             body: JSON.stringify({
                 name: name,
@@ -56,7 +73,10 @@ class Api {
 
     deleteCard(id) {
         return fetch(`${this._baseUrl}/cards/${id}`, {
-            headers: this._headers,
+            headers: {
+                ...this._headers,
+                'Authorization': localStorage.getItem('jwt'),
+            },
             method: 'DELETE',
         })
             .then(this._checkResponse)
@@ -64,7 +84,10 @@ class Api {
 
     editAvatar({avatar}) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
-            headers: this._headers,
+            headers: {
+                ...this._headers,
+                'Authorization': localStorage.getItem('jwt'),
+            },
             method: 'PATCH',
             body: JSON.stringify({
                 avatar: avatar,
@@ -77,14 +100,20 @@ class Api {
         if (likeState) {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
-                    headers: this._headers,
+                    headers: {
+                        ...this._headers,
+                        'Authorization': localStorage.getItem('jwt'),
+                    },
                     method: 'DELETE'
                 })
                 .then(this._checkResponse)
         } else {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
-                    headers: this._headers,
+                    headers: {
+                        ...this._headers,
+                        'Authorization': localStorage.getItem('jwt'),
+                    },
                     method: 'PUT'
                 })
                 .then(this._checkResponse)
@@ -92,5 +121,5 @@ class Api {
     }
 }
 
-const api = new Api(apiConfig);
+const api = new Api(baseApiURL);
 export default api;
