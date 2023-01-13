@@ -1,13 +1,15 @@
+import { baseApiURL } from "./constants";
+
 class Auth {
-    constructor() {
-        this._baseUrl = 'https://auth.nomoreparties.co';
+    constructor(baseUrl) {
+        this._baseUrl = baseUrl;
         this._headers = {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
         };
     }
 
     _checkResponse(res) {
+        console.log(res);
         if (res.ok) {
             return res.json();
         }
@@ -42,7 +44,7 @@ class Auth {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: {
                 ...this._headers,
-                'Authorization': `Bearer ${token}`
+                'Authorization': token,
             },
             method: 'GET',
         })
@@ -50,5 +52,5 @@ class Auth {
     }
 }
 
-const auth = new Auth();
+const auth = new Auth(baseApiURL);
 export default auth;

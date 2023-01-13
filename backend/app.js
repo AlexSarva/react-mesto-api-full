@@ -21,10 +21,38 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+const allowedCors = [
+  'https://sarva.students.nomoredomains.rocks',
+  'http://sarva.students.nomoredomains.rocks',
+  'localhost:3001',
+  'http://localhost:3001',
+  'localhost:3000',
+  'http://localhost:3000'
+];
+
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+app.use(function(req, res, next) {
+  const { origin } = req.headers;
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+
+  // const requestHeaders = req.headers['access-control-request-headers'];
+  res.header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+
+  const { method } = req;
+  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+  }
+
+  next();
 });
 
 app.use(helmet());
@@ -36,8 +64,8 @@ app.use(requestLogger);
 
 app.use('/', require('./routes/auth'));
 
-app.use('/users', auth, require('./routes/users'));
-app.use('/cards', auth, require('./routes/cards'));
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
 
 app.use('*', auth, () => {
   throw new NotFoundError('Страница не найдена');

@@ -46,7 +46,8 @@ function App() {
 
     useEffect(() => {
         if (loggedIn) {
-            Promise.all([api.getInitialProfileInfo(), api.getInitialCards()])
+            const jwt = localStorage.getItem('jwt')
+            Promise.all([api.getInitialProfileInfo(jwt), api.getInitialCards(jwt)])
                 .then(([userData, cards]) => {
                     setCurrentUser(userData);
                     setCards(cards);
@@ -58,7 +59,7 @@ function App() {
     }, [loggedIn])
 
     function handleUpdateUser(userInfo) {
-        api.patchProfileInfo(userInfo)
+        api.patchProfileInfo(userInfo, localStorage.getItem('jwt'))
             .then((userData) => {
                 setCurrentUser(userData);
             })
@@ -185,7 +186,7 @@ function App() {
 
     function handleSignup(email, password) {
         auth.register(email, password)
-            .then((res) => {
+            .then(() => {
                 openAuthPopup(true);
                 history.push('/sign-in');
             })
@@ -216,7 +217,7 @@ function App() {
             // проверяем токен пользователя
             auth.checkToken(jwt)
                 .then((data) => {
-                    setUserName(data.data.email);
+                    setUserName(data.email);
                     setLoggedIn(true);
                     history.push('/');
                 })

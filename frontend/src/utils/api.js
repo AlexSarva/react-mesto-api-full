@@ -1,9 +1,13 @@
-import {apiConfig} from "./constants";
+import { baseApiURL } from "./constants";
 
 class Api {
-    constructor({baseUrl, headers}) {
+    constructor(baseUrl) {
         this._baseUrl = baseUrl;
-        this._headers = headers;
+        this._headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        this._credentials = 'include';
     }
 
     _checkResponse(res) {
@@ -13,9 +17,14 @@ class Api {
         return Promise.reject(`Ошибка ${res.status}`);
     }
 
-    getInitialProfileInfo() {
+    getInitialProfileInfo(token) {
         return fetch(`${this._baseUrl}/users/me`,
-            {headers: this._headers})
+            {headers: {
+                    ...this._headers,
+                    'Authorization': token,
+                },
+                credentials: this._credentials,
+                method: 'GET'})
             .then(this._checkResponse)
             .then((res) => {
                 this._myID = res._id;
@@ -23,15 +32,24 @@ class Api {
             })
     }
 
-    getInitialCards() {
+    getInitialCards(token) {
         return fetch(`${this._baseUrl}/cards`,
-            {headers: this._headers})
+            {headers: {
+                    ...this._headers,
+                    'Authorization': token,
+                },
+                credentials: this._credentials,
+                method: 'GET'})
             .then(this._checkResponse)
     }
 
-    patchProfileInfo({name, about}) {
+    patchProfileInfo({name, about}, token) {
         return fetch(`${this._baseUrl}/users/me`, {
-            headers: this._headers,
+            headers: {
+                ...this._headers,
+                'Authorization': token,
+            },
+            credentials: this._credentials,
             method: 'PATCH',
             body: JSON.stringify({
                 name: name,
@@ -44,6 +62,7 @@ class Api {
     addNewCard({name, link}) {
         return fetch(`${this._baseUrl}/cards`, {
             headers: this._headers,
+            credentials: this._credentials,
             method: 'POST',
             body: JSON.stringify({
                 name: name,
@@ -57,6 +76,7 @@ class Api {
     deleteCard(id) {
         return fetch(`${this._baseUrl}/cards/${id}`, {
             headers: this._headers,
+            credentials: this._credentials,
             method: 'DELETE',
         })
             .then(this._checkResponse)
@@ -65,6 +85,7 @@ class Api {
     editAvatar({avatar}) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             headers: this._headers,
+            credentials: this._credentials,
             method: 'PATCH',
             body: JSON.stringify({
                 avatar: avatar,
@@ -78,6 +99,7 @@ class Api {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
                     headers: this._headers,
+                    credentials: this._credentials,
                     method: 'DELETE'
                 })
                 .then(this._checkResponse)
@@ -85,6 +107,7 @@ class Api {
             return fetch(`${this._baseUrl}/cards/${imgID}/likes`,
                 {
                     headers: this._headers,
+                    credentials: this._credentials,
                     method: 'PUT'
                 })
                 .then(this._checkResponse)
@@ -92,5 +115,5 @@ class Api {
     }
 }
 
-const api = new Api(apiConfig);
+const api = new Api(baseApiURL);
 export default api;

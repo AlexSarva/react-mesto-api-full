@@ -6,10 +6,5 @@ export const validationConfig = {
     errorClass: 'popup__field-error_active'
 };
 
-export const apiConfig = {
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-45',
-    headers: {
-        authorization: '521c5c18-4214-46d9-8387-7f33ad54ebee',
-        'Content-Type': 'application/json'
-    }
-};
+export const baseApiURL = 'https://api.sarva.students.nomoredomains.rocks';
+// export const baseApiURL = 'http://127.0.0.1:3000';

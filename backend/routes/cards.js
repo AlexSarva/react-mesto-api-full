@@ -3,26 +3,27 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getCards, createCard, deleteCard, addLikesCard, removeLikesCard,
 } = require('../controllers/cards');
+const auth = require('../middlewares/auth');
 const { UrlCheckRegex } = require('../constants/validate');
 
-router.get('/', getCards);
-router.delete('/:id', celebrate({
+router.get('/', auth, getCards);
+router.delete('/:id', auth, celebrate({
   params: Joi.object().keys({
     id: Joi.string().alphanum().length(24).hex(),
   }),
 }), deleteCard);
-router.post('/', celebrate({
+router.post('/', auth, celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required().pattern(UrlCheckRegex),
   }),
 }), createCard);
-router.put('/:cardId/likes', celebrate({
+router.put('/:cardId/likes', auth, celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().alphanum().length(24).hex(),
   }),
 }), addLikesCard);
-router.delete('/:cardId/likes', celebrate({
+router.delete('/:cardId/likes', auth, celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().alphanum().length(24).hex(),
   }),
