@@ -22,10 +22,6 @@ const getMeInfo = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new ValidationError('Переданы некорректные данные.'));
-        return;
-      }
       next(err);
     });
 };
